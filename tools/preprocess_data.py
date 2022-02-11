@@ -107,6 +107,13 @@ def get_args():
         help="Append an <eod> token to the end of a document.",
     )
     group.add_argument("--ftfy", action="store_true", help="Use ftfy to clean text")
+    parser.add_argument(
+        "-cft", 
+        "--conditional-finetune-token", 
+        action="store_true",
+        default=False, 
+        help=f"Whether to include an additional token to indicate the end of context in conditional finetuning."
+    )
     group = parser.add_argument_group(title="output data")
     group.add_argument(
         "--output-prefix",

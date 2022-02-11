@@ -39,6 +39,13 @@ def get_args():
     parser.add_argument(
         "-m", "--merge-file", default=None, help=f"Tokenizer merge file (if required)"
     )
+    parser.add_argument(
+        "-cft", 
+        "--conditional-finetune-token", 
+        action="store_true",
+        default=False, 
+        help=f"Whether to include an additional token to indicate the end of context in conditional finetuning."
+    )
     return parser.parse_args()
 
 
@@ -50,4 +57,5 @@ if __name__ == "__main__":
         data_dir=args.data_dir,
         vocab_file=args.vocab_file,
         merge_file=args.merge_file,
+        conditional_finetune_token=args.conditional_finetune_token
     )
