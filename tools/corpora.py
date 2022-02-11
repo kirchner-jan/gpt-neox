@@ -36,7 +36,7 @@ GPT2_MERGE_URL = "https://s3.amazonaws.com/models.huggingface.co/bert/gpt2-merge
 class DataDownloader(ABC):
     """Dataset registry class to automatically download / extract datasets"""
     
-    def __init__(self, tokenizer_type=None, merge_file=None, vocab_file=None, data_dir=None, num_workers=None):
+    def __init__(self, tokenizer_type=None, merge_file=None, vocab_file=None, data_dir=None, num_workers=None, conditional_finetune_token=None):
         if tokenizer_type is None:
             tokenizer_type = "GPT2BPETokenizer"
         if data_dir is None:
@@ -59,6 +59,7 @@ class DataDownloader(ABC):
         self._vocab_file = vocab_file
         self._data_dir = data_dir
         self._num_workers = num_workers
+        self.conditional_finetune_token = conditional_finetune_token
 
     @property
     def base_dir(self):
@@ -133,6 +134,7 @@ class DataDownloader(ABC):
             --tokenizer-type {self.tokenizer_type} \
             --merge-file {self.merge_file} \
             --append-eod \
+            --conditional-finetune-token \
             --workers {self.num_workers} "
 
         if self.num_docs is not None:
@@ -283,7 +285,7 @@ DATA_DOWNLOADERS = {
 
 
 def prepare_dataset(dataset_name: str, tokenizer_type: str = None, data_dir: str = None, vocab_file: str = None,
-                    merge_file: str = None, num_workers: int = None):
+                    merge_file: str = None, num_workers: int = None, conditional_finetune_token: str = None):
     """
     Downloads + tokenizes a dataset in the registry (dataset_name) and saves output .npy files to data_dir.
     """
@@ -301,5 +303,5 @@ def prepare_dataset(dataset_name: str, tokenizer_type: str = None, data_dir: str
     else:
         num_workers = 1 if dataset_name == "enwik8" else num_workers
         d = DownloaderClass(tokenizer_type=tokenizer_type, vocab_file=vocab_file, merge_file=merge_file,
-                            data_dir=data_dir, num_workers=num_workers)
+                            data_dir=data_dir, num_workers=num_workers, conditional_finetune_token=conditional_finetune_token)
         d.prepare()
