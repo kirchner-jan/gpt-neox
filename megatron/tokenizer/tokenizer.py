@@ -63,14 +63,8 @@ def build_tokenizer(args):
             raise ValueError(
             f"Adding special token not supported by {args.tokenizer_type}."
         )
-
-    if args.conditional_finetune_token:
-        try:
-            tokenizer.tokenizer.add_special_tokens(['<|endofcontext|>'])
-        except:
-            raise ValueError(
-            f"Adding special token not supported by {args.tokenizer_type}."
-        )
+    else:
+        tokenizer.eoctoken = None
 
     # Add vocab size.
     args.padded_vocab_size = _vocab_size_with_padding(tokenizer.vocab_size, args)

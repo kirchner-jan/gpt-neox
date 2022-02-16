@@ -101,9 +101,7 @@ def get_ltor_masks_and_position_ids(
             eoc_loc = ((drow == eoc_token).nonzero(as_tuple=True)[0])
             if len(eoc_loc) > 0:
                 loss_mask[ii , :eoc_loc[-1]] = 0.0
-        if eoc_token is None:
-            raise ValueError("`eoc_token` parameter must be supplied to perform conditional finetuning`")
-
+        
     # Position ids.
     position_ids = torch.arange(seq_length, dtype=torch.long, device=data.device)
     position_ids = position_ids.unsqueeze(0).expand_as(data)
