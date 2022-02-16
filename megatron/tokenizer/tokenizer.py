@@ -53,13 +53,12 @@ def build_tokenizer(args):
     elif args.tokenizer_type.lower() == "CharLevelTokenizer".lower():
         tokenizer = CharLevelTokenizer(vocab_size=512)
     else:
-        raise NotImplementedError(
-            "{} tokenizer is not " "implemented.".format(args.tokenizer_type)
-        )
-
-    if args.conditional_finetune_token:
+        raise NotImplementedError('{} tokenizer is not '
+                                  'implemented.'.format(args.tokenizer_type))
+    if args.conditional_finetune:
         try:
             tokenizer.tokenizer.add_special_tokens(['<|endofcontext|>'])
+            tokenizer.eoctoken = tokenizer.tokenizer.encode('<|endofcontext|>').ids[0]-1
         except:
             raise ValueError(
             f"Adding special token not supported by {args.tokenizer_type}."

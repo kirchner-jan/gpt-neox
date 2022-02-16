@@ -627,6 +627,11 @@ class NeoXArgsTokenizer(NeoXArgsTemplate):
     tokenizer object loaded into memory and accesible by other functions
     """
 
+    conditional_finetune: bool = False
+    """
+    Whether to activate conditional finetuning.
+    """
+
 
 @dataclass
 class NeoXArgsTraining(NeoXArgsTemplate):

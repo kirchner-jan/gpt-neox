@@ -212,6 +212,7 @@ def main():
     proc_start = time.time()
     total_bytes_processed = 0
     pbar = tqdm.tqdm()
+    
     for i, (doc, bytes_processed) in enumerate(encoded_docs, start=1):
         total_bytes_processed += bytes_processed
 

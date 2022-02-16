@@ -163,9 +163,14 @@ def _get_batch(neox_args, tokenizer, keys, data, datatype):
     attention_mask, loss_mask, position_ids = get_ltor_masks_and_position_ids(
         data=tokens,
         eod_token=neox_args.tokenizer.eod,
+        eoc_token=neox_args.tokenizer.eoctoken,
         eod_mask_loss=neox_args.eod_mask_loss,
+        conditional_finetune=neox_args.conditional_finetune
     )
-
+    # replace the <|endofcontext|> token with the <|padding|> token
+    if neox_args.conditional_finetune:
+        tokens[tokens == neox_args.tokenizer.eoctoken] = neox_args.tokenizer.pad_id
+        labels[labels == neox_args.tokenizer.eoctoken] = neox_args.tokenizer.pad_id
     return tokens, labels, loss_mask, attention_mask, position_ids
 
 

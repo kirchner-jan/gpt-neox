@@ -77,8 +77,8 @@ def get_ltor_masks_and_position_ids(
     data,
     eod_token,
     eoc_token=None,
-    eoc_mask_loss=False,
     eod_mask_loss=False,
+    conditional_finetune=False
 ):
     """Build masks and position id for left to right model."""
 
@@ -95,8 +95,12 @@ def get_ltor_masks_and_position_ids(
     loss_mask = torch.ones(data.size(), dtype=torch.float, device=data.device)
     if eod_mask_loss:
         loss_mask[data == eod_token] = 0.0
-    
-    if eoc_mask_loss:
+
+    if conditional_finetune:
+        for ii , drow in enumerate(data):
+            eoc_loc = ((drow == eoc_token).nonzero(as_tuple=True)[0])
+            if len(eoc_loc) > 0:
+                loss_mask[ii , :eoc_loc[-1]] = 0.0
         if eoc_token is None:
             raise ValueError("`eoc_token` parameter must be supplied to perform conditional finetuning`")
 

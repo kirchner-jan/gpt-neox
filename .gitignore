@@ -150,3 +150,7 @@ test_logs/
 logs/
 tensorboard/
 src/
+configs/small_test_finetune.yml
+configs/local_setup_finetune.yml
+configs/local_setup_pretrain.yml
+configs/small_test_pretrain.yml
