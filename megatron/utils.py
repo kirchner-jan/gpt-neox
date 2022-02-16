@@ -95,7 +95,7 @@ def get_ltor_masks_and_position_ids(
     loss_mask = torch.ones(data.size(), dtype=torch.float, device=data.device)
     if eod_mask_loss:
         loss_mask[data == eod_token] = 0.0
-
+    
     if conditional_finetune:
         for ii , drow in enumerate(data):
             eoc_loc = ((drow == eoc_token).nonzero(as_tuple=True)[0])
